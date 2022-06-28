@@ -3,6 +3,7 @@ package ru.grakovich.spring_boot.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.grakovich.spring_boot.models.User;
 import ru.grakovich.spring_boot.repositories.UserDAO;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
@@ -22,6 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> allUser() {
         return userDAO.findAll();
     }
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getUserById(long id) {
         Optional<User> optionalUser = userDAO.findById(id);
         return optionalUser.orElseThrow(IllegalArgumentException::new);
